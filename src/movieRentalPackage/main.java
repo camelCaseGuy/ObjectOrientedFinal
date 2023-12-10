@@ -1,6 +1,12 @@
 package movieRentalPackage;
 
-public class main {
+public class Main {
+
+// 1. Your new program must support different types of items including movies, video games, music CDs,
+// 		xbox, ps4, and books. You must anticipate other new types of items as well.
+// 2. Your new program must support not only renting, but also selling those items.
+// 3. You should provide basic functions (e.g., computing rental price, frequent rental points, coupons)
+//	  to support renting and selling transactions for those items in the store.
 
 	public static void main(String[] args) {
 		Customer smith = new Customer("Mr.Smith");

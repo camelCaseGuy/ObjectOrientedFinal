@@ -1,6 +1,6 @@
 package movieRentalPackage;
 
-public class Movie {
+public class Movie implements Item {
 
 	public static final int CHILDRENS = 2;
 	public static final int REGULAR = 0;
@@ -24,5 +24,15 @@ public class Movie {
 
 	public String getTitle() {
 		return title;
+	}
+
+	@Override
+	public double getRentalPrice(int daysRented) {
+		return daysRented * 2;
+	}
+
+	@Override
+	public double getSalesPrice() {
+		return 10;
 	}
 }

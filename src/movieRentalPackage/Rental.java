@@ -9,7 +9,9 @@ import movieRentalTransaction.Transaction;
 public class Rental {
 	private Movie _movie;
 	private int _daysRented;
+	// rental price before applying any coupons. We need to add a sales price
 	private double moviePrice;
+	// used to apply coupons
 	private Transaction transaction;
 
 	public Rental(Movie movie, int daysRented) {
