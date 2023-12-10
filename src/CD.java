@@ -1,10 +1,10 @@
 
 
-public class ConsoleGame extends Item {
+public class CD extends Item {
 
 	private String name;
 
-	public ConsoleGame(String name) {
+	public CD(String name) {
 		this.setName(name);
 	}
 

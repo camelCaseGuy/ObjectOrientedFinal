@@ -1,6 +1,6 @@
 
 
-public class CDsPriceStrategy implements CalculateSellingPriceStrategy {
+public class CDPriceStrategy implements CalculateSellingPriceStrategy {
 
 	double itemPrice = 2;
 

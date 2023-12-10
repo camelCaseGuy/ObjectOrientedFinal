@@ -3,8 +3,8 @@
 public class ItemSellFactory {
 
 	public CalculateSellingPriceStrategy getCalculateSellingPrice(Item itemType) {
-		if (itemType instanceof CDs) {
-			return new CDsPriceStrategy();
+		if (itemType instanceof CD) {
+			return new CDPriceStrategy();
 
 		} else if (itemType instanceof ConsoleGame) {
 			return new ConsoleGamesPriceStrategy();

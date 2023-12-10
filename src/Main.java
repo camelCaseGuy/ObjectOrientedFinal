@@ -21,7 +21,7 @@ public class Main {
 		// CUSTOMER SELLING
 		Customer amigo = new Customer("Amigo");
 
-		Item powerRangers = new CDs("Power Rangers");
+		Item powerRangers = new CD("Power Rangers");
 		Item godOfWar = new ConsoleGame("godOfWar");
 
 		amigo.addSellingItem(new Sell(powerRangers, 10));
