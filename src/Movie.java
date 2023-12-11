@@ -1,28 +1,13 @@
+public class Movie extends Item {
 
-
-public class Movie {
-
-	public static final int CHILDRENS = 2;
-	public static final int REGULAR = 0;
-	public static final int NEW_RELEASE = 1;
-
-	private String title;
-	private int priceCode;
-
-	public Movie(String title, int priceCode) {
-		this.title = title;
-		this.priceCode = priceCode;
-	}
-
-	public int getPriceCode() {
-		return priceCode;
-	}
-
-	public void setPriceCode(int arg) {
-		priceCode = arg;
-	}
-
-	public String getTitle() {
-		return title;
-	}
+    /**
+     * Constructs a Movie object with the given title and price code.
+     *
+     * @param title     The title of the movie.
+     * @param priceStrategyCode The price strategy code for the movie.
+     */
+    public Movie(String title, PriceStrategies priceStrategyCode) {
+        // Calls the constructor of the parent class (Item) to set type, title, and price code.
+        super("movie", title, priceStrategyCode);
+    }
 }

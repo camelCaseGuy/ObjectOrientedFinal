@@ -1,20 +1,4 @@
-
-
-public class Transaction {
-
-	public double applyCoupon(double moviePrice) {
-		Coupon tenOff = new TransactionDecorator(new TenDollarsOff());
-		moviePrice = tenOff.applyCoupon(moviePrice);
-
-		Coupon halfOff = new TransactionDecorator(new HalfOffCoupon());
-		moviePrice = halfOff.applyCoupon(moviePrice);
-		return moviePrice;
-	}
-
-	public double applyFreeMovieCoupon(double moviePrice, int frequentRenterPoints) {
-		Coupon freeMovie = new TransactionDecorator(new FreeMovie());
-		moviePrice = freeMovie.applyCoupon(moviePrice, frequentRenterPoints);
-		return moviePrice;
-	}
-
+// Interface for classes like "Rental" or "Sale"
+public interface Transaction {
+    public Charge getCharge();
 }

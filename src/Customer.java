@@ -1,93 +1,120 @@
-
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
+/**
+ * Represents a customer in the rental store.
+ */
 public class Customer {
-	private String _name;
-	// private int _quantity;
-	private double totalCharge = 0;
-	private int frequentRenterPoints = 0;
-	List<Rental> _rentals = new ArrayList<Rental>();
-	List<Sell> _sellingItem = new ArrayList<Sell>();
 
-	public Customer(String name) {
-		_name = name;
-	}
+    private String name;
+    private List<Rental> rentals = new ArrayList<>();
+    private List<Charge> charges = new ArrayList<>();
+    private double frequentRenterPoints;
 
-	public void addRental(Rental newRental) {
-		_rentals.add(newRental);
-	}
-	
-	public void addSellingItem(Sell newSellingItem) {
-		_sellingItem.add(newSellingItem);
-	}
+    /**
+     * Constructs a Customer with a given name.
+     *
+     * @param inputName The full name of the customer.
+     */
+    public Customer(String inputName) {
+        name = inputName;
+    }
 
-	public void removeRental(Rental newRental) {
-		_rentals.remove(newRental);
-	}
+    /**
+     * Adds a rental to the customer's list of rentals, applies any applicable coupon,
+     * and updates the charges and frequent renter points accordingly.
+     *
+     * @param newRental The rental to be added.
+     * @param coupon    The coupon to apply to the rental, if any.
+     */
+    public void addRental(Rental newRental, CouponList coupon) {
+        addFrequentRenterPoints(newRental.getNewFrequentRenterPointsToAdd());
+        applyCouponToRental(newRental, coupon);
+        addRentalToCustomer(newRental);
+        addChargeToCustomer(newRental); 
+    }
 
-	public String getName() {
-		return _name;
-	}
-    
-	public String customerSoldItemsReceipt() {
-		String soldData = "";
-		double soldAmount = 0;
+    /**
+     * Applies a coupon to a rental and updates points.
+     */
+    private void applyCouponToRental(Rental rental, CouponList coupon) {
+        // Coupon logic is encapsulated in Rental's applyCoupon
+        rental.applyCoupon(coupon, frequentRenterPoints);
+        
+        // Adjust customer's frequent rental points, if applicable 
+        if ((coupon == CouponList.TEN_POINTS_FOR_FREE_MOVIE) && (frequentRenterPoints >= 10)) {
+            frequentRenterPoints -= 10;
+            frequentRenterPoints -= rental.getNewFrequentRenterPointsToAdd();
+        } 
+    }
 
-		for (Sell selling : _sellingItem) {
-			soldAmount = 0;
-			soldAmount = selling.detemineSoldAmount(soldAmount);
 
-			Item item = selling.item;
-			if(item != null) {
-				soldData += "\n\t<Sold>\n\t\t<Title>" + String.valueOf(item.getItemName())+
-                        "</Title>\n\t\t<Price>" + String.valueOf(soldAmount) + "</Price>\n\t</Sold>";
-            }
-		}
+    /**
+     * Adds a rental to the customer's list.
+     */
+    private void addRentalToCustomer(Rental rental) {
+        rentals.add(rental);
+    }
 
-		return printSoldXML(soldData, soldAmount);
-	}
 
-	public String customerRentalReceipt() {
-		String movieInfo = "";
+    /**
+     * Adds a charge to the customer's list based on the rental.
+     */
+    private void addChargeToCustomer(Rental rental) {
+        charges.add(rental.getCharge());
+    }
 
-		for (Rental rental : _rentals) {
-			double thisMovieCharge = 0;
+    /**
+     * Removes a rental from the customer's list of rentals.
+     *
+     * @param rentalToRemove The rental to be removed.
+     */
+    public void removeRental(Rental rentalToRemove) {
+        rentals.remove(rentalToRemove);
+    }
 
-			if (rental.isFreeMovie(frequentRenterPoints) && frequentRenterPoints >= 10) {
-				frequentRenterPoints = frequentRenterPoints - 10;
-			} else {
-				thisMovieCharge = rental.calculateRentalAmount(thisMovieCharge);
-				frequentRenterPoints = rental.calculateFrequentRentalPoints(frequentRenterPoints);
-			}
+    /**
+     * Returns the customer's list of rentals.
+     *
+     * @return A list of the customer's rentals.
+     */
+    public List<Rental> getRentals() {
+        return rentals;
+    }
 
-			movieInfo += "\t<Movie>\n\t\t<Title>" + rental.getMovie().getTitle() + "</Title>\n\t\t<Price>"
-					+ thisMovieCharge + "</Price>\n\t\t<Duration>" + rental.getDaysRented()
-					+ "</Duration>\n\t</Movie>\n";
-			totalCharge += thisMovieCharge;
-		}
+    /**
+     * Returns the customer's list of charges.
+     *
+     * @return A list of the customer's charges.
+     */
+    public List<Charge> getCharges() {
+        return charges;
+    }
 
-		return printRentalXML(movieInfo, totalCharge);
-	}
+    /**
+     * Returns the customer's name.
+     *
+     * @return The name of the customer.
+     */
+    public String getName() {
+        return name;
+    }
 
-	public String printRentalXML(String data, double amount) {
-		String xmlString = 
-				"*****************RENTAL RECEIPT**********************\n"
-				+ "<Record>\n\t<Name>" + getName() + "</Name>\n" + data + "\t<AmountDue>" + amount
-				+ "</AmountDue>\n" + "\t<RentalPoints>" + frequentRenterPoints + "</RentalPoints>\n</Record>"
-				+ "\n\nThank you for renting our item!, " + this._name 
-				+ "!!!\n****************************************************\n";
+    /**
+     * Returns the total frequent renter points accumulated by the customer.
+     *
+     * @return The customer's frequent renter points.
+     */
+    public double getFrequentRenterPoints() {
+        return frequentRenterPoints;
+    }
 
-		return xmlString;
-	}
-	
-	public String printSoldXML(String data, double amount) {
-		String xmlString = 	"*******************SELL RECEIPT*********************\n"
-				+ "<Record>\n\t<Name>" + getName() + "</Name>" + data + "\n</Record>"
-				+ "\n\nThank you for selling us your Item!, " + this._name 
-				+ "!!!\n****************************************************\n";
-
-		return xmlString;
-	}
+    /**
+     * Adds frequent renter points to the customer's balance.
+     *
+     * @param pointsToAdd The number of points to add to the balance.
+     */
+    public void addFrequentRenterPoints(double pointsToAdd) {
+        frequentRenterPoints += pointsToAdd;
+    }
 }

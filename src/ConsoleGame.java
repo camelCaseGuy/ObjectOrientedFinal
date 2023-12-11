@@ -1,35 +1,13 @@
-
-
 public class ConsoleGame extends Item {
 
-	private String name;
-
-	public ConsoleGame(String name) {
-		this.setName(name);
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getItemName() {
-		return this.name;
-	}
-
-	@Override
-	public double getRentalPrice(int daysRented) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'getRentalPrice'");
-	}
-
-	@Override
-	public double getSellingPrice(int quantity) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'getSellingPrice'");
-	}
-
+    /**
+     * Constructs a Movie object with the given title and price code.
+     *
+     * @param title     The title of the movie.
+     * @param priceStrategyCode The price strategy code for the movie.
+     */
+    public ConsoleGame(String title, PriceStrategies priceStrategyCode) {
+        // Calls the constructor of the parent class (Item) to set type, title, and price code.
+        super("movie", title, priceStrategyCode);
+    }
 }
